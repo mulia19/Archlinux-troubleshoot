@@ -1,0 +1,275 @@
+connect wifi in TTY :
+    - $ nmtui
+
+Info pacman :
+    - $ sudo pacman -Sy   ---sync Pacman databases locally in /var/lib/pacman/sync/
+    - $ sudo pacman -Syy  ---sync databases with the online databases with force this time
+    - $ sudo pacman -Syu  ---sync databases and update our system
+    - $ sudo pacman -Syyu ---sync database with force and update our system.
+
+Uninstall aplication:
+    - sudo pacman -R (application) or
+    - sudo yay -R (application) or
+    - sudo pacman -Rns (application)   --> option -Rns for remove all unnecessary dependecies
+
+Time Arch menunjukkan kesalahan :
+    - $ timedatectl set-ntp true
+
+error server pgp erik dubois :
+    - Open /etc/pacman.conf and put a # before all the lines of ArcoLinux or remove them
+    - $ sudo pacman -Sy
+    - add arcolinux spices or sudo pacman -U 'packagename'
+    
+    If you still have problems, you can delete the folder /etc/pacman.d/gnupg and start afresh with : 
+    - $ sudo pacman-key --init
+    - $ sudo pacman-key --populate archlinux arcolinux
+    - $ sudo pacman-key -f 74F5DE85A506BF64
+    - $ sudo pacman-key --lsign-key 74F5DE85A506BF64
+    source : https://arcolinuxforum.com/viewtopic.php?t=327
+
+Pamac-all mengalami error invalid or corrupted database
+    - hapus semua file *sig di dalam /var/lib/pacman/sync/
+
+Font Fira Code in VSCode not running as well
+    - setting json : 
+    "editor.fontFamily": "Fira Code, Souce Code Pro, Hack, 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 15,
+    "editor.formatOnSave": true,
+
+Arcolinux-tweak-tool tidak bisa load :
+    - copykan isi file di : https://github.com/arcolinux/arcolinuxl-iso/blob/master/archiso/airootfs/etc/sddm.conf
+    - pastekan di isi file default.conf
+    - kemudian file default.conf tersebut copykan ke /etc/  lalu ganti nama menjadi sddm.conf
+
+Ganti cursor mouse (jika di lxappearance tidak jalan) :
+    ~/.icons/default/index.theme
+         [Icon Theme]
+         Inherits=Bibata-Modern-Ice
+
+    ~/.config/gtk-3.0/settings.ini
+          gtk-cursor-theme-name=Bibata-Modern-Ice
+          gtk-cursor-theme-size=0
+
+    restart biar efektif...
+    source : https://wiki.archlinux.org/title/Cursor_themes
+
+Maintenance archlinux :
+    Referensi bisa merujuk ke : https://bandithijo.github.io/blog/menjaga-sistem-tetap-bersih-di-arch
+    Menghapus paket cache yang saat ini tidak diinstall :
+    - $ sudo pacman -Sc
+    Menghapus semua paket cache, termasuk yang diinstall :
+    - $ sudo pacman -Scc
+
+    Periksa lagi kapasitas direktori, apakah benar-benar bersih :
+    - $ du -sh /var/cache/pacman/pkg
+    - $ ls /var/cache/pacman/pkg
+
+    - Menghapus paket yatim piatu (paket tidak terpakai) :
+    - $ sudo pacman -Qtdq
+    - $ sudo pacman -Rns $(pacman -Qtdq)
+
+    Membersihkan cache pada direktori /home :
+    - $ sudo du -sh ~/.cache/
+    - $ rm -rf ~/.cache/*
+
+    Delete duplikat, file kosong, direktori kosong dan symlink yang rusak :
+    - $ sudo pacman -S rmlint
+        contoh pada direktori home :
+        - $ rmlint /home/user
+            Skrip dapat ditemukan di folder home. Buka menggunakan editor teks, gulir ke bawah dan periksa file apa yang akan dihapus
+        - $ sh rmlint.sh
+        - $ -c 
+        lalu tekan enter untuk menghapusnya
+
+    Bersihkan jurnal systemd :
+        cara 1 :
+        - /etc/systemd/journald.conf
+        - uncomment SystemMaxUse=50M
+        - jika mau membatasi hanya berisi file sebesar 50mb
+        cara 2 :
+        - $ sudo journalctl --vacuum-size=50M
+        cara 3 :
+        - $ sudo journalctl --vacuum-time=4weeks
+        - jika mau berdasarkan batas waktu 4 minggu terakhir
+
+    Remove unneeded dependencies :
+        - $ yay -yc
+
+Pamac-aur atau pamac-all, silahkan pilih
+
+Mixer audio tray tidak keluar :
+    - pastikan sudah terinstall pulseaudio volume control (pavucontrol)
+    - preference audio tray : 
+        - status icon bagian external mixer di isi : pavucontrol
+
+Numlock tidak load otomatis saat sesudah booting :
+    - pastikan di config i3 numlock activated (exec_always --no-startup-id numlockx on)
+    - if sddm/lightdm, cek /etc/sddm.conf.d   --->Numlock=on
+    - terakhir pastikan ada file numlockx di /usr/bin
+
+Theme LIbreoffice yang tidak kelihatan dengan theme dark arch :
+    - /etc/profile.d/libreoffice-fresh.sh
+    - uncomment (remove #) export SAL_USE_VCLPLUGIN=qt5
+    - logout/restart
+    - apabila masih tidak cocok bisa uncomment pilihan yang lainnya
+
+Reddit susah diakses di browser :
+    - /etc/host
+    - kemudian tambahkan : 
+ # Reddit unblock
+ 151.101.129.140   i.redditmedia.com 
+ 52.34.230.181     www.reddithelp.com 
+ 151.101.65.140    g.redditmedia.com 
+ 151.101.65.140    a.thumbs.redditmedia.com 
+ 151.101.1.140     redditgifts.com 
+ 151.101.1.140     i.redd.it 
+ 151.101.1.140     old.reddit.com 
+ 151.101.1.140     new.reddit.com 
+ 151.101.129.140   reddit.com 
+ 151.101.129.140   gateway.reddit.com 
+ 151.101.129.140   oauth.reddit.com 
+ 151.101.129.140   sendbird.reddit.com 
+ 151.101.129.140   v.redd.it 
+ 151.101.1.140     b.thumbs.redditmedia.com 
+ 151.101.1.140     events.reddit.com 
+ 54.210.123.98     stats.redditmedia.com 
+ 151.101.65.140    www.redditstatic.com 
+ 151.101.193.140   www.reddit.com 
+ 52.3.23.26        pixel.redditmedia.com 
+ 151.101.65.140    www.redditmedia.com 
+ 151.101.193.140   about.reddit.com 
+ 52.203.76.9       out.reddit.com
+
+Gagal login dengan password :
+    - boot dengan arch installer di flasdisk
+    - $ mount /dev/sdaX /mnt (ganti X sesuai lokasi partisi target)
+    - $ arch-chroot /mnt
+    - $ passwd <username> (ganti username dengan username yang telah dibuat sebelumnya)
+
+Change size font terminal urxvt :
+    - ~/.Xresources
+    - cari bagian ini : URxvt.font:  xft:TerminessTTFNerdFontMono:pixelsize=14
+    - lalu ubah ukuran/jenis fontnya
+    - update dengan : $ sudo xrdb ~/.Xresources
+
+Tool arcolinux tweak tool dan arcolinux desktop trash tidak mengikuti theme system maka :
+    - /usr/share/gtk-2.0/gtkrc
+    - ubah mengikuti theme system yang dimaksud, contoh :
+    gtk-theme-name = "Arc-Dark"
+    - /usr/share/gtk-3.0/settings.ini
+    - ubah juga mengikuti theme system yang dimaksud, contoh :
+    gtk-theme-name = Arc-Dark
+    link referensi : https://wiki.archlinux.org/title/GTK
+
+Font size menu gimp terlalu kecil maka cek :
+    - ~/.Xresources (lalu tambahkan Xft.dpi: 95 dan atur ukuran dan jenis font, menyesuaikan yang diinginkan )
+    - ! fonts
+    URxvt.letterSpace:              -1
+    URxvt.font:                     xft:Monospace:regular:size=11
+    URxvt.imFont:                   xft:Monospace:regular:size=11
+    URxvt.italicFont:               xft:Monospace:italic:size=11
+    URxvt.boldFont:                 xft:Monospace:bold:size=11
+    URxvt.boldItalicFont:           xft:Monospace:regular:size=11
+                                    Xft.dpi: 95
+
+Driver printer epson LX 300++ :
+    - $ sudo pacman -S cups cups-pdf foomatic-db-engine foomatic-db ghostscript gsfonts
+    - kemudian ke printer setting dan pilih ibmpro (atau cup boleh juga sebagai alternatif)
+    - untuk detailnya baca disini :
+        https://wiki.archlinux.org/title/CUPS
+
+        https://www.openprinting.org/printer/Epson/Epson-LX-300plus
+        https://www.openprinting.org/driver/ibmpro
+        https://archlinux.org/packages/extra/any/foomatic-db/
+
+        https://github.com/OpenPrinting/ghostscript-printer-app
+        https://snapcraft.io/ghostscript-printer-app
+
+Speaker berdengung (humming sound)
+    opsi 1:
+        - cek ground listrik
+        - /sys/module/snd_hda_intel/parameters/power_save  to 0
+        
+        untuk hasil permanent bisa melakukan :
+        - create new conf file : /etc/modprobe.d/audio_disable_powersave.conf
+        - add folowing settings in the files : 
+            - options snd_hda_intel power_save=0
+        - bila diperlukan kopikan juga tlp.conf
+        - reboot
+            
+        link referensi : https://bbs.archlinux.org/viewtopic.php?id=262246
+        
+    opsi 2: 
+        (pastikan tanda #tidak ada)
+        In /etc/tlp.conf set SOUND_POWER_SAVE_ON_AC=0 and, if you have to, SOUND_POWER_SAVE_ON_BAT=0
+        - tambahan,  DE gnome pastikan SOUND_POWER_SAVE_CONTROLLER=Y
+        link ref: https://forum.manjaro.org/t/buzzing-sound-after-last-update/85679
+
+Error : failed to start remout kernel archlinux
+    - cek di terminal : $ sudo blkid
+    - buka etc/fstab, pastikan UUID tempat OS linuxnya sama dengan yg di blkid
+    - gunakan gparted buat copy UUID
+
+error: failed to synchronize all databases (no servers configured for repository)
+    - sudo pacman-mirrors -c Germany && sudo pacman -Syyu
+
+VLC plugin play/stop click mouse : 
+    - AUR repository : https://aur.archlinux.org/packages/vlc-pause-click-plugin/
+    - gunakan makepkg -si untuk menginstall
+    link referensi   : https://github.com/nurupo/vlc-pause-click-plugin#arch-linux
+
+Cek besaran file di partisi linux :
+    - $ sudo pacman -S ncdu
+    - jalankan terminal di partisi home dan ketik ncdu 
+
+Membuat menu root di thunar :
+    - opsi pertama :
+        - ketik di terminal sudo -i
+        - kemudian ketik thunar
+
+    - opsi kedua :
+        - Click + in the custom actions dialog to configure a new action
+        Name: Open Thunar as ROOT
+        Description: Open Thunar as ROOT
+        Command: thunar admin:%d   atau pkexec thunar %f
+        
+        Now move to the Appearance Conditions tab 
+        - File Pattern: *
+        Select Directories, Text Files and Other Files option
+        link ref : https://forum.endeavouros.com/t/root-create-thunar-custom-actions/7289\
+
+Thunar lambat respon membuka root : 
+	- $ sudo pacman -Rns gvfs-smb
+
+Mengubah bahasa ke bahasa inggris:
+    - $sudo nano /etc/default/locale
+        LANG="en_US"
+        LANGUAGE="en_US:en"
+    - $sudo nano ~/.pam_environment
+        LANG=en_US
+        LANGUAGE=en_US
+
+login keyring :
+	- sudo pacman -S seahorse
+	- open seahorse
+	- klik login pojok kiri atas buat unlock
+	- setelah terbuka, sorot app yg ingin di remove login keyringnya
+	- kembali ke login lalu klik kiri dan pilih change password
+	- isikan password namun saat minta password kedua biarkan kosong dan continue
+	
+Install nvidia 390xx/340xx, setelah restart blank :
+	- masuk ke tty2 kemudian install mesa dan login memakai kernel lts
+
+Enabling numlock from startx :
+    - /etc/X11/xinit/xinitrc
+    - /usr/bin/numlockx on
+
+Enable sound theme xfce :
+    - link reference :
+        - https://www.xfce-look.org/p/1187979
+        - https://www.bing.com/videos/search?q=sound+theme+xfce&docid=607991361570357713&mid=A9FE467C3C83134B3FF9A9FE467C3C83134B3FF9&view=detail&FORM=VIRE
+
+    
+
+
